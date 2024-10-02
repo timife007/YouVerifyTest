@@ -17,6 +17,9 @@ interface CartDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCartItem(cartItem: CartedProductEntity)
 
+    @Query("SELECT SUM(price * count) FROM carted_product")
+    fun getTotalPrice(): Flow<Double>
+
     @Delete
     suspend fun deleteCartItem(cartItem: CartedProductEntity)
 }

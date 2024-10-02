@@ -1,11 +1,14 @@
 package com.timife.youverifytest.data.repositories
 
+import com.timife.youverifytest.data.local.daos.CacheDao
 import com.timife.youverifytest.data.local.db.ProductDb
 import com.timife.youverifytest.data.mappers.toCategory
 import com.timife.youverifytest.data.mappers.toCategoryEntity
 import com.timife.youverifytest.data.mappers.toProduct
 import com.timife.youverifytest.data.mappers.toProductEntity
 import com.timife.youverifytest.data.remote.ApiService
+import com.timife.youverifytest.data.utils.fetchAndCache
+import com.timife.youverifytest.data.utils.loadFromDb
 import com.timife.youverifytest.domain.Resource
 import com.timife.youverifytest.domain.model.Product
 import com.timife.youverifytest.domain.repositories.ProductRepository
@@ -17,52 +20,61 @@ import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
-    private val db: ProductDb
+    private val dao: CacheDao
 ) : ProductRepository {
     override fun getCategories(): Flow<Resource<List<String>>> {
-        return flow {
-            emit(Resource.Loading())
-            try {
-                val response = apiService.getAllCategories()
-
-                if (response.isSuccessful) {
-                    response.body()?.let { categories ->
-                        categories.map {
-                            db.productDao.insertCategory(it.toCategoryEntity())
-                        }
-                    }
+        return fetchAndCache(
+            apiCall = { apiService.getAllCategories() },
+            cacheCall = { dao.getAllCategories().map { it.toCategory() } },
+            insertInDb = { categories ->
+                categories.map {
+                    dao.insertCategory(it.toCategoryEntity())
                 }
-                val categories = db.productDao.getAllCategories().map {
-                    it.toCategory()
-                }
-                emit(Resource.Success(categories))
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message))
-            }
-        }.flowOn(Dispatchers.IO)
+            },
+            mapToResult = { it }
+        )
     }
 
     override fun getProducts(): Flow<Resource<List<Product>>> {
+        return fetchAndCache(
+            apiCall = { apiService.getAllProducts() },
+            cacheCall = { dao.getAllProducts().map { it.toProduct() } },
+            insertInDb = { products ->
+                dao.insertProducts(products.map { it.toProductEntity() })
+            },
+            mapToResult = { it }
+        )
+    }
+
+    override fun getProductsByCategory(category: String): Flow<Resource<List<Product>>> {
+        return loadFromDb(
+            dbCall = { dao.getProductsByCategory(category).map { it.toProduct() } },
+            mapToResult = { it }
+        )
+    }
+
+    override fun searchProducts(query: String): Flow<Resource<List<Product>>> {
+        return loadFromDb(
+            dbCall = { dao.searchProducts(query).map { it.toProduct() } },
+            mapToResult = { it }
+        )
+    }
+
+    override fun getProductById(productId: Int): Flow<Resource<Product>> {
         return flow {
             emit(Resource.Loading())
             try {
-                val response = apiService.getAllProducts()
-                if (response.isSuccessful) {
-                    response.body()?.let { products ->
-                        db.productDao.insertProducts(products.map { it.toProductEntity() })
-                    }
+                // Get product by ID from local database
+                val product = dao.getProductById(productId)?.toProduct()
+                if (product == null) {
+                    emit(Resource.Error("Product not found"))
                 }
-                val products = db.productDao.getAllProducts().map { item ->
-                    item.toProduct()
-                }
-
-                if(products.isEmpty()){
-                    emit(Resource.Error("No products found"))
-                }
-                emit(Resource.Success(products))
+                emit(Resource.Success(product))
             } catch (e: Exception) {
                 emit(Resource.Error(e.message))
             }
         }.flowOn(Dispatchers.IO)
     }
+
+
 }
