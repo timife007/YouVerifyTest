@@ -1,7 +1,6 @@
 package com.timife.youverifytest.data.repositories
 
 import com.timife.youverifytest.data.local.daos.CacheDao
-import com.timife.youverifytest.data.local.db.ProductDb
 import com.timife.youverifytest.data.mappers.toCategory
 import com.timife.youverifytest.data.mappers.toCategoryEntity
 import com.timife.youverifytest.data.mappers.toProduct
