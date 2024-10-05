@@ -6,8 +6,6 @@ import com.timife.youverifytest.data.mappers.toCategoryEntity
 import com.timife.youverifytest.data.mappers.toProduct
 import com.timife.youverifytest.data.mappers.toProductEntity
 import com.timife.youverifytest.data.remote.ApiService
-import com.timife.youverifytest.data.utils.fetchAndCache
-import com.timife.youverifytest.data.utils.loadFromDb
 import com.timife.youverifytest.domain.Resource
 import com.timife.youverifytest.domain.model.Product
 import com.timife.youverifytest.domain.repositories.ProductRepository
