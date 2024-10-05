@@ -1,7 +1,6 @@
 package com.timife.youverifytest.presentation.viewmodels
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +10,8 @@ import com.timife.youverifytest.domain.usecases.AddProductToCartUC
 import com.timife.youverifytest.domain.usecases.GetSingleProductUC
 import com.timife.youverifytest.presentation.states.DetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,8 +24,8 @@ class ProductDetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val productId = savedStateHandle.get<Int?>("productId")
-    private val _detailState = mutableStateOf<DetailUiState>(DetailUiState.Loading)
-    val detailUiState: State<DetailUiState> = _detailState
+    private val _detailState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
+    val detailUiState: StateFlow<DetailUiState> = _detailState
 
 
     init {

@@ -1,19 +1,17 @@
 package com.timife.youverifytest.presentation.viewmodels
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.timife.youverifytest.domain.Resource
-import com.timife.youverifytest.domain.model.Product
 import com.timife.youverifytest.domain.usecases.FilterProductByCategoryUC
 import com.timife.youverifytest.domain.usecases.GetAllCategoriesUC
 import com.timife.youverifytest.domain.usecases.GetAllProductsUC
 import com.timife.youverifytest.domain.usecases.SearchProductUC
 import com.timife.youverifytest.presentation.states.ProductUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,8 +24,8 @@ class ProductsViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _uiState = mutableStateOf<ProductUiState>(ProductUiState.Loading)
-    val uiState: State<ProductUiState> = _uiState
+    private val _uiState = MutableStateFlow<ProductUiState>(ProductUiState.Loading)
+    val uiState: StateFlow<ProductUiState> = _uiState
 
     init {
         getProducts()
