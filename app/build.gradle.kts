@@ -76,7 +76,6 @@ dependencies {
     implementation(libs.coil)
     //Network Http connection
     implementation (libs.retrofit)
-    // define any required OkHttp artifacts without version
     implementation(libs.okhttp3.okhttp)
     implementation(libs.okhttp3.okhttp)
     implementation(libs.logging.interceptor)
@@ -85,7 +84,9 @@ dependencies {
 
     //json
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+    implementation("com.github.bumptech.glide:glide:4.15.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

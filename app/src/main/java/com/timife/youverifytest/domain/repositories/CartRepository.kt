@@ -9,5 +9,7 @@ interface CartRepository {
 
     val totalPrice: Flow<Double>
 
-    suspend fun addToCart(cartItem: CartedProduct)
+    suspend fun addToCart(productId: Int, count: Int)
+
+    fun cartedProductQty(productId: Int?): Flow<Int>
 }

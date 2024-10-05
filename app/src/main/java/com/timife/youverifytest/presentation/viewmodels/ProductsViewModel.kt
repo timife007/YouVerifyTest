@@ -3,10 +3,8 @@ package com.timife.youverifytest.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.timife.youverifytest.domain.Resource
-import com.timife.youverifytest.domain.usecases.FilterProductByCategoryUC
-import com.timife.youverifytest.domain.usecases.GetAllCategoriesUC
 import com.timife.youverifytest.domain.usecases.GetAllProductsUC
-import com.timife.youverifytest.domain.usecases.SearchProductUC
+import com.timife.youverifytest.presentation.states.Category
 import com.timife.youverifytest.presentation.states.ProductUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,14 +16,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val getAllProductsUC: GetAllProductsUC,
-    private val filterProductByCategoryUC: FilterProductByCategoryUC,
-    private val searchProductUC: SearchProductUC,
-    private val getALlCategoryUC: GetAllCategoriesUC
 ) : ViewModel() {
-
 
     private val _uiState = MutableStateFlow<ProductUiState>(ProductUiState.Loading)
     val uiState: StateFlow<ProductUiState> = _uiState
+
+
 
     init {
         getProducts()
@@ -51,6 +47,8 @@ class ProductsViewModel @Inject constructor(
                                     x.category
                                 }.map { y ->
                                     y.category
+                                }.map { name ->
+                                    Category(name)
                                 })
 
                         }else{
@@ -61,5 +59,4 @@ class ProductsViewModel @Inject constructor(
             }
         }
     }
-
 }

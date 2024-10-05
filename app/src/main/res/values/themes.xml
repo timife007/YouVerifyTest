@@ -3,7 +3,28 @@
     <style name="Base.Theme.YouVerifyTest" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:actionBarStyle">@style/CustomActionBarStyle</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
+        <!-- Top App Bar style -->
+        <item name="toolbarStyle">@style/CustomTopAppBar</item>
     </style>
 
+    <!-- Custom style for the Top App Bar -->
+    <style name="CustomTopAppBar" parent="Widget.Material3.Toolbar">
+        <!-- Background color of the Top App Bar -->
+        <item name="backgroundTint">@color/off_white</item>
+
+        <!-- Customize title text appearance -->
+        <item name="titleTextAppearance">@style/CustomTopAppBarTitleText</item>
+    </style>
+
+    <!-- Custom Title Text appearance -->
+    <style name="CustomTopAppBarTitleText" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="Theme.YouVerifyTest" parent="Base.Theme.YouVerifyTest" />
+
 </resources>

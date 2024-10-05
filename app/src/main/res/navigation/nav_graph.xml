@@ -8,21 +8,29 @@
     <fragment
         android:id="@+id/ProductListFragment"
         android:name="com.timife.youverifytest.presentation.screens.ProductListFragment"
-        android:label="@string/first_fragment_label"
+        android:label="Discover Products"
         tools:layout="@layout/fragment_product_list">
 
         <action
             android:id="@+id/action_ProductListFragment_to_ProductDetailsFragment"
             app:destination="@id/ProductDetailsFragment" />
+        <action
+            android:id="@+id/action_ProductListFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
     </fragment>
     <fragment
         android:id="@+id/ProductDetailsFragment"
         android:name="com.timife.youverifytest.presentation.screens.ProductDetailsFragment"
-        android:label="@string/second_fragment_label"
+        android:label="Product Details"
         tools:layout="@layout/fragment_product_details">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/ProductListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.timife.youverifytest.presentation.screens.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
 </navigation>

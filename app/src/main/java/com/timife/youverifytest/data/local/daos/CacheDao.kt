@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.timife.youverifytest.data.local.entities.CategoryEntity
 import com.timife.youverifytest.data.local.entities.ProductEntity
 
 @Dao
@@ -23,15 +22,7 @@ interface CacheDao {
     @Query("SELECT * FROM product WHERE category LIKE '%' || :category || '%'")
     suspend fun getProductsByCategory(category: String): List<ProductEntity>
 
-    @Query("SELECT * FROM product WHERE title LIKE '%' || :query || '%'")
-    suspend fun searchProducts(query: String): List<ProductEntity>
-
     @Query("SELECT * FROM product WHERE id = :productId")
     suspend fun getProductById(productId: Int): ProductEntity?
 
-    @Query("SELECT * FROM category")
-    suspend fun getAllCategories(): List<CategoryEntity>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCategory(categories: CategoryEntity)
 }

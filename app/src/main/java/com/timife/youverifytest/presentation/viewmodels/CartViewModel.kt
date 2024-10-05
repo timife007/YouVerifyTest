@@ -30,8 +30,4 @@ class CartViewModel @Inject constructor(
             CartUiState.Success(products, price)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CartUiState.Loading)
-
-    suspend fun addToCart(cartItem: CartedProduct) {
-        addProductToCartUC(cartItem)
-    }
 }

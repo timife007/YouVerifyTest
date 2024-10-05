@@ -7,7 +7,7 @@ import javax.inject.Inject
 class AddProductToCartUC @Inject constructor(
     private val cartRepository: CartRepository
 ){
-    suspend operator fun invoke(cartItem: CartedProduct) {
-        cartRepository.addToCart(cartItem)
+    suspend operator fun invoke(productId:Int,count: Int) {
+        cartRepository.addToCart(productId, count)
     }
 }
