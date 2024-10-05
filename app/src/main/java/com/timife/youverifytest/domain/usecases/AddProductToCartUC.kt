@@ -10,5 +10,4 @@ class AddProductToCartUC @Inject constructor(
     suspend operator fun invoke(cartItem: CartedProduct) {
         cartRepository.addToCart(cartItem)
     }
-
 }

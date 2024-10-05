@@ -7,5 +7,4 @@ class GetAllCartedProductsUC @Inject constructor(
     private val cartRepository: CartRepository
 ){
     operator fun invoke() = cartRepository.cartedProducts
-
 }
