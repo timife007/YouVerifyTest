@@ -9,4 +9,5 @@ interface ProductRepository{
     fun getProducts(): Flow<Resource<List<Product>>>
 
     fun getProductById(productId: Int): Flow<Resource<Product>>
+
 }

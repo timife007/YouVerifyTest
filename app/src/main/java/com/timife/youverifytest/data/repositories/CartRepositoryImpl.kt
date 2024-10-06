@@ -5,6 +5,13 @@ import com.timife.youverifytest.data.local.daos.CacheDao
 import com.timife.youverifytest.data.local.daos.CartDao
 import com.timife.youverifytest.data.mappers.toCartedProduct
 import com.timife.youverifytest.data.mappers.toCartedProductEntity
+import com.timife.youverifytest.data.mappers.toPaymentAccess
+import com.timife.youverifytest.data.remote.models.PaymentAccessDto
+import com.timife.youverifytest.data.remote.models.requests.PaymentInitRequest
+import com.timife.youverifytest.data.remote.services.PaymentApiService
+import com.timife.youverifytest.di.PaystackRetrofit
+import com.timife.youverifytest.domain.Resource
+import com.timife.youverifytest.domain.model.PaymentAccess
 import com.timife.youverifytest.domain.repositories.CartRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +23,8 @@ import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(
     private val cartDao: CartDao,
-    private val cacheDao: CacheDao
+    private val cacheDao: CacheDao,
+    private val paystackApiService: PaymentApiService
 ) : CartRepository {
 
 
@@ -78,6 +86,35 @@ class CartRepositoryImpl @Inject constructor(
                 cartDao.deleteCartItem(productId)
             }catch (e:Exception){
                 Log.e("removeFromCart", e.message.toString())
+            }
+        }
+    }
+
+    override fun initializePayment(amount: Double) : Flow<Resource<PaymentAccess>> = flow{
+
+        val request = PaymentInitRequest(
+            email = "timife007@gmail.com",
+            amount = amount.toInt().toString()
+        )
+        emit(Resource.Loading())
+        try {
+            val response = paystackApiService.createOrder(request)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(Resource.Success(it.toPaymentAccess()))
+                }
+            }
+        }catch (e:Exception){
+            emit(Resource.Error(e.message))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun clearCart() {
+        withContext(Dispatchers.IO){
+            try {
+                cartDao.clearCart()
+            }catch (e:Exception){
+
             }
         }
     }

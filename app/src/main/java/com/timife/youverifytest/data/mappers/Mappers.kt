@@ -2,9 +2,11 @@ package com.timife.youverifytest.data.mappers
 
 import com.timife.youverifytest.data.local.entities.CartedProductEntity
 import com.timife.youverifytest.data.local.entities.ProductEntity
+import com.timife.youverifytest.data.remote.models.PaymentAccessDto
 import com.timife.youverifytest.data.remote.models.ProductDto
 import com.timife.youverifytest.data.remote.models.RatingDto
 import com.timife.youverifytest.domain.model.CartedProduct
+import com.timife.youverifytest.domain.model.PaymentAccess
 import com.timife.youverifytest.domain.model.Product
 import com.timife.youverifytest.domain.model.Rating
 
@@ -84,5 +86,13 @@ fun ProductEntity.toCartedProductEntity(count:Int):CartedProductEntity{
         price = price,
         image = image,
         quantity = count,
+    )
+}
+
+fun PaymentAccessDto.toPaymentAccess(): PaymentAccess {
+    return PaymentAccess(
+        status = status,
+        message = message,
+        data = data
     )
 }

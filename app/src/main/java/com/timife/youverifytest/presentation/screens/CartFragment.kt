@@ -1,18 +1,28 @@
 package com.timife.youverifytest.presentation.screens
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.paystack.android.core.Paystack
+import com.paystack.android.ui.paymentsheet.PaymentSheet
+import com.paystack.android.ui.paymentsheet.PaymentSheetResult
+import com.paystack.android.ui.paymentsheet.createPaymentSheet
 import com.timife.youverifytest.R
 import com.timife.youverifytest.databinding.FragmentCartBinding
+import com.timife.youverifytest.navigation.ProductList
 import com.timife.youverifytest.presentation.adapters.CartListAdapter
 import com.timife.youverifytest.presentation.states.CartUiState
+import com.timife.youverifytest.presentation.states.InitPaymentState
+import com.timife.youverifytest.presentation.utils.Utils
 import com.timife.youverifytest.presentation.viewmodels.cart.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -25,6 +35,7 @@ class CartFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CartListAdapter
     private val viewModel: CartViewModel by viewModels()
+    private lateinit var paymentSheet: PaymentSheet
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,10 +62,11 @@ class CartFragment : Fragment() {
                     }
 
                     is CartUiState.Success -> {
-                        val totalPrice = state.totalPrice.toString().ifBlank { getString(R.string._0_00)}
+                        val totalPrice =
+                            state.totalPrice.toString().ifBlank { getString(R.string._0_00) }
                         adapter.submitList(state.data)
                         binding.apply {
-                            checkout.text = getString(R.string.checkout_with_price, totalPrice)
+                            checkoutText.text = getString(R.string.checkout_with_price, totalPrice)
                             cartProgress.visibility = View.GONE
                             errorLayout.visibility = View.GONE
                         }
@@ -73,6 +85,72 @@ class CartFragment : Fragment() {
                 }
             }
         }
+
+        //listener for payment
+        makePayment()
+
+        Paystack.builder()
+            .setPublicKey("pk_test_5f5dffc9728e29df00ce92d4dd4c37fc8108ce58")
+            .setLoggingEnabled(true)
+            .build()
+        paymentSheet = PaymentSheet(this, ::paymentComplete)
+        binding.checkoutLayout.setOnClickListener {
+            triggerValidation()
+        }
         return binding.root
+    }
+
+    private fun triggerValidation() {
+        Log.d("TAG", "triggerValidation: triggered")
+        lifecycleScope.launch {
+            viewModel.totalPrice.collectLatest {
+                Log.d("TAG", "triggerValidation: $it")
+                if (it != 0.0) {
+                    Log.d("TAG", "triggerValidation: $it")
+                    viewModel.paymentInit(it)
+                }
+            }
+        }
+    }
+
+    private fun makePayment() {
+        lifecycleScope.launch {
+            viewModel.initPaymentState.collectLatest {
+                when (it) {
+                    is InitPaymentState.Loading -> {
+                        binding.checkoutProgress.visibility = View.VISIBLE
+
+                    }
+                    is InitPaymentState.Success -> {
+                        paymentSheet.launch(accessCode = it.accessCode)
+                        binding.checkoutProgress.visibility = View.GONE
+                    }
+                    is InitPaymentState.Error -> {
+                        Utils.showSnackbar(binding.root, it.error)
+                        binding.cartProgress.visibility = View.GONE
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    private fun paymentComplete(paymentSheetResult: PaymentSheetResult) {
+        val message = when (paymentSheetResult) {
+            PaymentSheetResult.Cancelled -> getString(R.string.cancelled)
+            is PaymentSheetResult.Failed -> {
+                paymentSheetResult.error.message ?: getString(R.string.failed)
+            }
+
+            is PaymentSheetResult.Completed -> {
+                // Returns the transaction reference  PaymentCompletionDetails(reference={TransactionRef})
+                viewModel.clearCartDB()
+                findNavController().navigate(ProductList)
+                findNavController().popBackStack()
+                getString(R.string.successful)
+            }
+        }
+
+        Utils.showSnackbar(binding.root, message)
     }
 }

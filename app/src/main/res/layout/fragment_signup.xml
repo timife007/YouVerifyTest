@@ -44,6 +44,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/signup_email_input_text"
                 android:layout_width="match_parent"
+                android:maxLines="1"
                 android:layout_height="match_parent"
                 android:hint="@string/enter_your_email" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -76,6 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/enter_your_password"
+                android:maxLines="1"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,6 +109,7 @@
                 android:id="@+id/confirm_password_input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:maxLines="1"
                 android:hint="@string/confirm_your_password"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>

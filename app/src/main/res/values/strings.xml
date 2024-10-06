@@ -56,4 +56,7 @@
     <string name="login_successful">Login Successful</string>
     <string name="unable_to_create_account">Unable to create Account</string>
     <string name="account_created_successfully">Account Created Successfully</string>
+    <string name="successful">Successful</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="failed">Failed</string>
 </resources>

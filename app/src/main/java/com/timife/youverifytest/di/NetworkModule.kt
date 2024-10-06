@@ -1,7 +1,8 @@
 package com.timife.youverifytest.di
 
 import com.google.firebase.auth.FirebaseAuth
-import com.timife.youverifytest.data.remote.ApiService
+import com.timife.youverifytest.data.remote.services.PaymentApiService
+import com.timife.youverifytest.data.remote.services.ProductsApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     private const val BASE_URL = "https://fakestoreapi.com/"
+    private const val PAYSTACK_BASE_URL = "https://api.paystack.co/"
 
 
     @Singleton
@@ -35,6 +37,7 @@ object NetworkModule {
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
+    @ProductsRetrofit
     @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
@@ -43,16 +46,31 @@ object NetworkModule {
         .client(okHttpClient)
         .build()
 
+    @PaystackRetrofit
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun providePaystackRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(PAYSTACK_BASE_URL)
+        .client(okHttpClient)
+        .build()
+
+    @Singleton
+    @Provides
+    fun provideApiService(@ProductsRetrofit retrofit: Retrofit): ProductsApiService {
+        return retrofit.create(ProductsApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providePaystackApiService(@PaystackRetrofit retrofit: Retrofit): PaymentApiService {
+        return retrofit.create(PaymentApiService::class.java)
     }
 
 
     @Singleton
     @Provides
-    fun provideFirebaseAuth(): FirebaseAuth{
+    fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }
 }

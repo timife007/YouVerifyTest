@@ -3,7 +3,8 @@ package com.timife.youverifytest.data.repositories
 import com.timife.youverifytest.data.local.daos.CacheDao
 import com.timife.youverifytest.data.mappers.toProduct
 import com.timife.youverifytest.data.mappers.toProductEntity
-import com.timife.youverifytest.data.remote.ApiService
+import com.timife.youverifytest.data.remote.services.ProductsApiService
+import com.timife.youverifytest.di.ProductsRetrofit
 import com.timife.youverifytest.domain.Resource
 import com.timife.youverifytest.domain.model.Product
 import com.timife.youverifytest.domain.repositories.ProductRepository
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
+    private val productsApiService: ProductsApiService,
     private val dao: CacheDao
 ) : ProductRepository {
 
@@ -23,7 +24,7 @@ class ProductRepositoryImpl @Inject constructor(
             emit(Resource.Loading())
             try {
                 // Fetch products from API initially
-                val response = apiService.getAllProducts()
+                val response = productsApiService.getAllProducts()
 
                 if (response.isSuccessful) {
                     response.body()?.let { products ->

@@ -28,7 +28,7 @@ data class ProductDetails(
     val productId: Int
 )
 
-
+//Navigation graph for the main destinations outside the auth flow
 fun navigationGraph(navController: NavController):NavGraph{
     return navController.createGraph(startDestination = ProductList){
         fragment<ProductListFragment, ProductList>{
@@ -43,6 +43,7 @@ fun navigationGraph(navController: NavController):NavGraph{
     }
 }
 
+//Navigation graph for the auth flow
 fun authNavigationGraph(navController: NavController):NavGraph{
     return navController.createGraph(startDestination = Signup) {
         fragment<LoginFragment, Login> {

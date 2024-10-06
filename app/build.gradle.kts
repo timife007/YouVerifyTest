@@ -69,11 +69,9 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.hilt)
     implementation(libs.timber)
-    implementation(libs.serialization)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
-    implementation(libs.splash.screen)
-    implementation(libs.coil)
+
     //Network Http connection
     implementation (libs.retrofit)
     implementation(libs.okhttp3.okhttp)
@@ -82,11 +80,14 @@ dependencies {
     implementation(libs.retrofit2.kotlin.coroutines.adapter)
     implementation(libs.converter.gson)
 
+    //Paystack
+    implementation(libs.paystack.ui)
+
     //json
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
-    implementation("com.github.bumptech.glide:glide:4.15.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.15.0")
+    implementation(libs.gson)
+    implementation(libs.kotlinx.serialization.json.v161)
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

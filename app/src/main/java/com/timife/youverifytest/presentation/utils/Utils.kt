@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.navigation.NavOptions
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
@@ -33,10 +34,10 @@ object Utils {
             }
 
             override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
+                resource: Drawable,
+                model: Any,
                 target: Target<Drawable>?,
-                dataSource: com.bumptech.glide.load.DataSource?,
+                dataSource: DataSource,
                 isFirstResource: Boolean
             ): Boolean {
                 // visibility management when loading is complete

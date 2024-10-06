@@ -27,4 +27,7 @@ interface CartDao{
 
     @Query("SELECT * FROM carted_product WHERE productId = :id")
     suspend fun getSingleCartedProduct(id:Int): CartedProductEntity?
+
+    @Query("DELETE FROM carted_product")
+    suspend fun clearCart()
 }
