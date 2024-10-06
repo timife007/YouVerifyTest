@@ -8,7 +8,6 @@ import com.timife.youverifytest.data.mappers.toCartedProductEntity
 import com.timife.youverifytest.domain.repositories.CartRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -38,21 +37,23 @@ class CartRepositoryImpl @Inject constructor(
             // Get the product and cart item from the database
             val product = cacheDao.getProductById(productId)
             val cartedItem = cartDao.getSingleCartedProduct(productId)
-            // If the count is 0, remove the item from the cart
-            if (count == 0) {
-                cartDao.deleteCartItem(cartedItem!!)
-            }
             /**
+             * If the count is 0, remove the item from the cart, ELSE
              * If the item is not in the cart, map it to the entity and
              * add it to the db; if present already, update it with the new quantity
              */
-            if (cartedItem == null) {
-                val newCartItem = product?.toCartedProductEntity(count)
-                cartDao.insertCartItem(newCartItem!!)
+            if (count == 0) {
+                cartDao.deleteCartItem(productId)
             } else {
-                val oldCartItem = cartedItem.copy(count = count)
-                cartDao.insertCartItem(oldCartItem)
+                if (cartedItem == null) {
+                    val newCartItem = product?.toCartedProductEntity(count)
+                    cartDao.insertCartItem(newCartItem!!)
+                } else {
+                    val oldCartItem = cartedItem.copy(quantity = count)
+                    cartDao.insertCartItem(oldCartItem)
+                }
             }
+
         }
     }
 
@@ -70,4 +71,14 @@ class CartRepositoryImpl @Inject constructor(
             }
         }
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun removeFromCart(productId: Int) {
+        withContext(Dispatchers.IO){
+            try {
+                cartDao.deleteCartItem(productId)
+            }catch (e:Exception){
+                Log.e("removeFromCart", e.message.toString())
+            }
+        }
+    }
 }

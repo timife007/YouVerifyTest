@@ -6,5 +6,5 @@ data class CartedProduct(
     val title:String,
     val price:Double,
     val image:String,
-    val count:Int,
+    val quantity:Int,
 )

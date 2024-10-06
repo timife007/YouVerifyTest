@@ -10,12 +10,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.timife.youverifytest.R
 import com.timife.youverifytest.databinding.CartListItemBinding
 import com.timife.youverifytest.domain.model.CartedProduct
+import com.timife.youverifytest.presentation.utils.Utils
 
-class CartListAdapter : ListAdapter<CartedProduct, CartListAdapter.CartViewHolder>(CartDiffUtil()) {
+class CartListAdapter(private val onDeleteItemClicked:(Int) -> Unit) : ListAdapter<CartedProduct, CartListAdapter.CartViewHolder>(CartDiffUtil()) {
     inner class CartViewHolder(private val binding: CartListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CartedProduct) {
-            binding.quantityText.text = item.title
+            binding.quantityText.text = item.quantity.toString()
+            Utils.loadImage(binding.cartImage.context, binding.cartImage, item.image, binding.imageProgressBar)
+            binding.cartItemPrice.text = binding.root.context.getString(R.string.price_label, item.price)
+            binding.cartItemTitle.text = item.title
+            binding.cartItemRemoveButton.setOnClickListener {
+                onDeleteItemClicked(item.productId)
+            }
         }
     }
 

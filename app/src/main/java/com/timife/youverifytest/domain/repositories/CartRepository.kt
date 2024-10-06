@@ -12,4 +12,6 @@ interface CartRepository {
     suspend fun addToCart(productId: Int, count: Int)
 
     fun cartedProductQty(productId: Int?): Flow<Int>
+
+    suspend fun removeFromCart(productId: Int)
 }
