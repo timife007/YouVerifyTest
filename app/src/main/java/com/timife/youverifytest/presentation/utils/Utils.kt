@@ -12,6 +12,7 @@ import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.load.engine.GlideException
 import com.google.android.material.chip.Chip
 import com.google.android.material.shape.ShapeAppearanceModel
+import com.google.android.material.snackbar.Snackbar
 import com.timife.youverifytest.R
 
 object Utils {
@@ -57,27 +58,29 @@ object Utils {
             .into(imageView) // Set the image in the ImageView
     }
 
-    fun createCategoryChip(context: Context, category: String, onClick:() -> Unit): Chip {
-        return Chip(context).apply {
-            text = category
-            isCloseIconVisible = false
-            setChipBackgroundColorResource(R.color.off_white)
-            shapeAppearanceModel = ShapeAppearanceModel().withCornerSize(
-                context.resources.getDimension(R.dimen.chip_corner_radius)
-            )
-            setChipStrokeWidthResource(R.dimen.stroke_width)
-            setTextColor(context.resources.getColor(R.color.black, null))
-            setOnClickListener {
-                onClick()
-            }
-        }
-    }
-
     val navOptions = NavOptions.Builder()
         .setEnterAnim(R.anim.slide_in_right)
         .setExitAnim(R.anim.slide_out_left)
         .setPopEnterAnim(R.anim.slide_in_left)
         .setPopExitAnim(R.anim.slide_out_right)
         .build()
+
+    fun showSnackbar(
+        view: View,
+        message: String,
+        duration: Int = Snackbar.LENGTH_SHORT,
+        actionText: String? = null,
+        action: (() -> Unit)? = null
+    ) {
+        val snackbar = Snackbar.make(view, message, duration)
+
+        if (actionText != null && action != null) {
+            snackbar.setAction(actionText) {
+                action()
+            }
+        }
+        snackbar.show()
+    }
+
 
 }

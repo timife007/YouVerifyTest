@@ -62,7 +62,7 @@ fun CartedProduct.toCartedProductEntity(): CartedProductEntity {
         title = title,
         price = price,
         image = image,
-        count = count,
+        quantity = quantity,
     )
 }
 
@@ -73,17 +73,16 @@ fun CartedProductEntity.toCartedProduct():CartedProduct{
         title = title,
         price = price,
         image = image,
-        count = count,
+        quantity = quantity,
     )
 }
 
 fun ProductEntity.toCartedProductEntity(count:Int):CartedProductEntity{
     return CartedProductEntity(
-//        id = id,
         productId = id,
         title = title,
         price = price,
         image = image,
-        count = count,
+        quantity = count,
     )
 }

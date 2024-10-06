@@ -16,4 +16,9 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="General.Text.Style" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

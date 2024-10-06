@@ -1,6 +1,5 @@
 package com.timife.youverifytest.presentation.screens
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.util.Util
-import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.chip.Chip
-import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.snackbar.Snackbar
-import com.timife.youverifytest.R
 import com.timife.youverifytest.databinding.FragmentProductListBinding
 import com.timife.youverifytest.navigation.ProductDetails
 import com.timife.youverifytest.presentation.adapters.ProductListAdapter
@@ -34,16 +28,14 @@ class ProductListFragment : Fragment() {
 
     private val viewModel: ProductsViewModel by viewModels()
 
-    private var _binding: FragmentProductListBinding? = null
-
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentProductListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentProductListBinding.inflate(inflater, container, false)
+        binding = FragmentProductListBinding.inflate(inflater, container, false)
 
 
         recyclerView = binding.productsRecyclerview
@@ -82,15 +74,5 @@ class ProductListFragment : Fragment() {
 
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

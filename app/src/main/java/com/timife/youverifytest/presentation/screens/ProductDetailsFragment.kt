@@ -17,14 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 @AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
 
-    private var _binding: FragmentProductDetailsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentProductDetailsBinding
     private val viewModel: ProductDetailsViewModel by viewModels()
 
     override fun onCreateView(
@@ -32,7 +28,7 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
+        binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
         lifecycleScope.launch {
             viewModel.detailUiState.collectLatest {state ->
                 when (state) {
@@ -81,15 +77,5 @@ class ProductDetailsFragment : Fragment() {
             }
         }
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
