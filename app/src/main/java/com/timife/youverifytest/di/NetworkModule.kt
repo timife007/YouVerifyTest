@@ -1,6 +1,5 @@
 package com.timife.youverifytest.di
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.timife.youverifytest.data.remote.ApiService
 import dagger.Module
@@ -23,9 +22,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val interceptor = HttpLoggingInterceptor { message ->
-            Log.i("TAG", "providesHttpLoggingInterceptor: $message")
-        }
+        val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         return interceptor
     }

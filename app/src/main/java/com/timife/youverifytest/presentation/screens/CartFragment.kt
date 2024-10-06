@@ -13,7 +13,7 @@ import com.timife.youverifytest.R
 import com.timife.youverifytest.databinding.FragmentCartBinding
 import com.timife.youverifytest.presentation.adapters.CartListAdapter
 import com.timife.youverifytest.presentation.states.CartUiState
-import com.timife.youverifytest.presentation.viewmodels.CartViewModel
+import com.timife.youverifytest.presentation.viewmodels.cart.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -24,14 +24,12 @@ class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CartListAdapter
-
     private val viewModel: CartViewModel by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentCartBinding.inflate(inflater, container, false)
 
@@ -53,7 +51,7 @@ class CartFragment : Fragment() {
                     }
 
                     is CartUiState.Success -> {
-                        val totalPrice = state.totalPrice.toString().ifBlank { "0.00" }
+                        val totalPrice = state.totalPrice.toString().ifBlank { getString(R.string._0_00)}
                         adapter.submitList(state.data)
                         binding.apply {
                             checkout.text = getString(R.string.checkout_with_price, totalPrice)
@@ -66,7 +64,6 @@ class CartFragment : Fragment() {
                         // Show error state
                         binding.apply {
                             cartProgress.visibility = View.GONE
-                            errorLayout.visibility = View.VISIBLE
                             errorImage.visibility = View.VISIBLE
                             errorText.visibility = View.VISIBLE
                             errorText.text = state.error

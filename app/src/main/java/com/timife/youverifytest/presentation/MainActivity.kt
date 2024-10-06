@@ -24,7 +24,7 @@ import com.timife.youverifytest.navigation.navigationGraph
 import com.timife.youverifytest.presentation.screens.auth.AuthActivity
 import com.timife.youverifytest.presentation.states.CartUiState
 import com.timife.youverifytest.presentation.utils.Utils
-import com.timife.youverifytest.presentation.viewmodels.CartViewModel
+import com.timife.youverifytest.presentation.viewmodels.cart.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

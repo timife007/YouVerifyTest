@@ -130,8 +130,10 @@
                 android:id="@+id/create_acct_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/black"
+                android:background="@drawable/button_selector"
                 android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:elevation="2dp"
                 android:focusable="true"
                 android:longClickable="true"
                 android:orientation="horizontal">

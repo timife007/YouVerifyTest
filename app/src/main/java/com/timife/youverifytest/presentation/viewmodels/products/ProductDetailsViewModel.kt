@@ -1,7 +1,6 @@
-package com.timife.youverifytest.presentation.viewmodels
+package com.timife.youverifytest.presentation.viewmodels.products
 
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -81,7 +80,6 @@ class ProductDetailsViewModel @Inject constructor(
     fun updateItemInCart(count:Int) {
         viewModelScope.launch {
             productId.value?.let {
-                Log.d("COUNTING", count.toString())
                 addProductToCartUC(it, count)
                 updateCount()
             }

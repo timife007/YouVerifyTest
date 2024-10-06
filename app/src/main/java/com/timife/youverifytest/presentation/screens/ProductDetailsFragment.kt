@@ -12,7 +12,7 @@ import com.timife.youverifytest.R
 import com.timife.youverifytest.databinding.FragmentProductDetailsBinding
 import com.timife.youverifytest.presentation.states.DetailUiState
 import com.timife.youverifytest.presentation.utils.Utils
-import com.timife.youverifytest.presentation.viewmodels.ProductDetailsViewModel
+import com.timife.youverifytest.presentation.viewmodels.products.ProductDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

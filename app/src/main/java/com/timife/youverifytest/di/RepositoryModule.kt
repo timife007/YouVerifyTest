@@ -21,8 +21,10 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun provideProductRepository(
+    abstract fun bindCartRepository(
         cartRepositoryImpl: CartRepositoryImpl
     ): CartRepository
+
+
 
 }

@@ -1,4 +1,4 @@
-package com.timife.youverifytest.presentation.viewmodels
+package com.timife.youverifytest.presentation.viewmodels.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

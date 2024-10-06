@@ -15,7 +15,7 @@ import com.timife.youverifytest.navigation.ProductDetails
 import com.timife.youverifytest.presentation.adapters.ProductListAdapter
 import com.timife.youverifytest.presentation.states.ProductUiState
 import com.timife.youverifytest.presentation.utils.Utils
-import com.timife.youverifytest.presentation.viewmodels.ProductsViewModel
+import com.timife.youverifytest.presentation.viewmodels.products.ProductsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,9 +25,7 @@ class ProductListFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductListAdapter
-
     private val viewModel: ProductsViewModel by viewModels()
-
     private lateinit var binding: FragmentProductListBinding
 
     override fun onCreateView(
@@ -36,8 +34,6 @@ class ProductListFragment : Fragment() {
     ): View {
 
         binding = FragmentProductListBinding.inflate(inflater, container, false)
-
-
         recyclerView = binding.productsRecyclerview
         adapter = ProductListAdapter(
             onItemClickListener = { id ->
@@ -48,7 +44,6 @@ class ProductListFragment : Fragment() {
             }
         )
         recyclerView.adapter = adapter
-
 
         lifecycleScope.launch {
             viewModel.uiState.collect {state ->
@@ -71,8 +66,6 @@ class ProductListFragment : Fragment() {
                 }
             }
         }
-
-
         return binding.root
     }
 }

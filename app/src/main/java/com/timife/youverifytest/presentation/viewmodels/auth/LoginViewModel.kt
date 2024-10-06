@@ -25,7 +25,7 @@ class LoginViewModel @Inject constructor(
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-
+                        // Check if user's email is verified
                         if (user?.isEmailVerified == true) {
                             _loginUiState.value =
                                 LoginUiState.Success(isSuccess = true, message = "Login Successful")
@@ -35,7 +35,6 @@ class LoginViewModel @Inject constructor(
                         }
                     } else {
                         // If sign in fails, display a message to the user.
-
                         _loginUiState.value = LoginUiState.Error(
                             message = task.exception?.message
                                 ?: "Unknown Error Occurred, please try again"
@@ -47,6 +46,4 @@ class LoginViewModel @Inject constructor(
                 }
             }
     }
-
-
 }
