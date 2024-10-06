@@ -4,27 +4,43 @@ package com.timife.youverifytest.presentation.utils
 object Validation {
 
     private fun validateEmail(email: String): ValidateResponse {
-        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
-        if (!email.matches(emailRegex.toRegex())) {
+        val isEmailValid = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        if (!isEmailValid) {
             return ValidateResponse(false, "Enter a valid email")
         }
         return ValidateResponse(true, "Email validated")
     }
 
     private fun validatePassword(password: String, confirmPassword: String): ValidateResponse {
+        // Check if the password length is less than 6 characters
         if (password.length < 6) {
             return ValidateResponse(
-                false,
-                "Password is too short, should be at least 6 characters",
-                ErrorType.SHORT_PASSWORD
+                isValid = false,
+                message = "Password is too short, should be at least 6 characters",
+                errorType = ErrorType.SHORT_PASSWORD
             )
-        }else if (password != confirmPassword) {
-            return ValidateResponse(false, "Passwords don't match", ErrorType.PASSWORD_MISMATCH)
         }
-        return ValidateResponse(true, "Password Validated")
+
+        // Check if the password and confirmPassword match
+        if (password != confirmPassword) {
+            return ValidateResponse(
+                isValid = false,
+                message = "Passwords don't match",
+                errorType = ErrorType.PASSWORD_MISMATCH
+            )
+        }
+
+        // If both validations pass, return a successful response
+        return ValidateResponse(isValid = true, message = "Password Validated")
     }
 
-    fun areSignupCredentialsValid(
+
+    /**
+     * @param isEmailValid: A callback that indicates if the email is valid and provides an optional error message.
+     * @param isPasswordValid: A callback that indicates if the password is valid and provides an optional error message and a flag for the validity of the password.
+     * @param allValidated: A callback that is invoked when both email and password are valid.
+     */
+    fun validateSignupCredentials(
         email: String,
         password: String,
         confirmPassword: String,
@@ -32,55 +48,73 @@ object Validation {
         isPasswordValid: (Boolean, String?, Boolean) -> Unit,
         allValidated: () -> Unit
     ) {
-
+        // Validate email
         val emailValidation = validateEmail(email)
-        val passwordValidation =
-            validatePassword(password, confirmPassword)
-        if (!emailValidation.isValid) {
-            isEmailValid(false,emailValidation.message)
-        }else{
-            isEmailValid(true, null)
+        isEmailValid(emailValidation.isValid, emailValidation.message)
+
+        // Validate password and confirm password
+        val passwordValidation = validatePassword(password, confirmPassword)
+        if (passwordValidation.isValid) {
+            isPasswordValid(true, null, true) // Valid password
+        } else {
+            // If password validation fails, check for specific error type
+            isPasswordValid(
+                false,
+                passwordValidation.message,
+                passwordValidation.errorType == ErrorType.SHORT_PASSWORD
+            )
         }
 
-        if (!passwordValidation.isValid) {
-            if (passwordValidation.errorType == ErrorType.SHORT_PASSWORD){
-                isPasswordValid(false,passwordValidation.message, true)
-            }else{
-                isPasswordValid(true, passwordValidation.message, false)
-            }
-        }else{
-            isPasswordValid(true, null, true)
-        }
-        if(emailValidation.isValid && passwordValidation.isValid){
+        // Call allValidated if both email and password are valid
+        if (emailValidation.isValid && passwordValidation.isValid) {
             allValidated()
         }
     }
 
-    fun areLoginCredentialsValid(
+
+    /**
+     * @param isEmailValid: A callback that indicates if the email is valid and provides an optional error message.
+     * @param isPasswordValid: A callback that indicates if the password is valid and provides an optional error message.
+     * @param allValidated: A callback that is invoked when both email and password are valid.
+     */
+    fun validateLoginCredentials(
         email: String,
         password: String,
         isEmailValid: (Boolean, String?) -> Unit,
         isPasswordValid: (Boolean, String?) -> Unit,
         allValidated: () -> Unit
     ) {
-        val emailValidation = validateEmail(email)
-        val passwordValidation = password.length >= 6
-        if (!emailValidation.isValid) {
-            isEmailValid(false, emailValidation.message)
-        } else {
-            isEmailValid(true, null)
+        // Check for empty email
+        if (email.isBlank()) {
+            isEmailValid(false, "Email cannot be empty")
+            return // Early return to prevent further validation
         }
 
-        if (!passwordValidation) {
+        // Validate email format and return validation result
+        val emailValidation = validateEmail(email)
+        isEmailValid(emailValidation.isValid, emailValidation.message)
+
+        // Check for empty password
+        if (password.isBlank()) {
+            isPasswordValid(false, "Password cannot be empty")
+            return // Early return to prevent further validation
+        }
+
+        // Validate password length
+        val isPasswordValidLength = password.length >= 6
+        if (!isPasswordValidLength) {
             isPasswordValid(false, "Password should not be less than 6 characters")
         } else {
-            isPasswordValid(true, null)
+            isPasswordValid(true, null) // Password length is valid
         }
 
-        if(emailValidation.isValid && passwordValidation){
+        // Call allValidated callback if both email and password are valid
+        if (emailValidation.isValid && isPasswordValidLength) {
             allValidated()
         }
     }
+
+
 }
 
 
