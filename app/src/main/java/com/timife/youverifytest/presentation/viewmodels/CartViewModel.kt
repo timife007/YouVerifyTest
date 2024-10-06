@@ -2,8 +2,6 @@ package com.timife.youverifytest.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.timife.youverifytest.domain.model.CartedProduct
-import com.timife.youverifytest.domain.usecases.AddProductToCartUC
 import com.timife.youverifytest.domain.usecases.DeleteCartProductUC
 import com.timife.youverifytest.domain.usecases.GetAllCartedProductsUC
 import com.timife.youverifytest.domain.usecases.GetTotalPriceUC

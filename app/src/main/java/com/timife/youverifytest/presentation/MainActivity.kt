@@ -15,10 +15,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.badge.BadgeDrawable.BadgeGravity
 import com.google.android.material.badge.BadgeUtils.attachBadgeDrawable
 import com.google.android.material.badge.ExperimentalBadgeUtils
-import com.google.android.material.snackbar.Snackbar
 import com.timife.youverifytest.R
 import com.timife.youverifytest.databinding.ActivityMainBinding
 import com.timife.youverifytest.navigation.Cart
@@ -44,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
 
@@ -53,7 +51,6 @@ class MainActivity : AppCompatActivity() {
 
         if (isLoggedIn) {
             // If the user is already logged in, go directly to MainActivity
-            binding = ActivityMainBinding.inflate(layoutInflater)
             setContentView(binding.root)
         } else {
             // If not logged in, navigate to LoginActivity

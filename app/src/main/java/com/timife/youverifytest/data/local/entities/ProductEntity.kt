@@ -2,8 +2,6 @@ package com.timife.youverifytest.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.timife.youverifytest.domain.model.Rating
 
 @Entity(tableName = "product")
 data class ProductEntity(

@@ -1,6 +1,5 @@
 package com.timife.youverifytest.presentation.states
 
-import com.timife.youverifytest.domain.model.CartedProduct
 import com.timife.youverifytest.domain.model.Product
 
 sealed class DetailUiState {
