@@ -7,11 +7,18 @@ import androidx.navigation.fragment.fragment
 import com.timife.youverifytest.presentation.screens.CartFragment
 import com.timife.youverifytest.presentation.screens.ProductDetailsFragment
 import com.timife.youverifytest.presentation.screens.ProductListFragment
+import com.timife.youverifytest.presentation.screens.auth.LoginFragment
+import com.timife.youverifytest.presentation.screens.auth.SignupFragment
 import kotlinx.serialization.Serializable
 
 @Serializable
-object ProductList
+object Signup
 
+@Serializable
+object Login
+
+@Serializable
+object ProductList
 
 @Serializable
 object Cart
@@ -32,6 +39,17 @@ fun navigationGraph(navController: NavController):NavGraph{
         }
         fragment<CartFragment, Cart>{
             label = "Cart"
+        }
+    }
+}
+
+fun authNavigationGraph(navController: NavController):NavGraph{
+    return navController.createGraph(startDestination = Signup) {
+        fragment<LoginFragment, Login> {
+            label = "Login"
+        }
+        fragment<SignupFragment, Signup> {
+            label = "Signup"
         }
     }
 }
