@@ -7,8 +7,8 @@ import androidx.navigation.fragment.fragment
 import com.timife.youverifytest.presentation.screens.CartFragment
 import com.timife.youverifytest.presentation.screens.ProductDetailsFragment
 import com.timife.youverifytest.presentation.screens.ProductListFragment
+import com.timife.youverifytest.presentation.screens.auth.CreateAccountFragment
 import com.timife.youverifytest.presentation.screens.auth.LoginFragment
-import com.timife.youverifytest.presentation.screens.auth.SignupFragment
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -48,7 +48,7 @@ fun authNavigationGraph(navController: NavController):NavGraph{
         fragment<LoginFragment, Login> {
             label = "Login"
         }
-        fragment<SignupFragment, Signup> {
+        fragment<CreateAccountFragment, Signup> {
             label = "Signup"
         }
     }

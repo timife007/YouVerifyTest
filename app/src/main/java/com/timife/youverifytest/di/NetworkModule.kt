@@ -1,6 +1,7 @@
 package com.timife.youverifytest.di
 
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.timife.youverifytest.data.remote.ApiService
 import dagger.Module
 import dagger.Provides
@@ -49,5 +50,12 @@ object NetworkModule {
     @Provides
     fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
+    }
+
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAuth(): FirebaseAuth{
+        return FirebaseAuth.getInstance()
     }
 }

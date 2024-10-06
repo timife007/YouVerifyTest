@@ -5,13 +5,10 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import androidx.navigation.NavOptions
-import androidx.navigation.Navigation.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.load.engine.GlideException
-import com.google.android.material.chip.Chip
-import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.snackbar.Snackbar
 import com.timife.youverifytest.R
 
@@ -20,9 +17,9 @@ object Utils {
         context: Context,
         imageView: ImageView,
         imageUrl: String,
-        progressBar: View // ProgressBar to show/hide during loading
+        progressBar: View
     ) {
-        // Define a request listener to manage loading states
+        // request listener to manage loading states
         val listener = object : RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,
@@ -30,10 +27,9 @@ object Utils {
                 target: Target<Drawable>,
                 isFirstResource: Boolean
             ): Boolean {
-                // Hide ProgressBar and show the ImageView on load failure
                 progressBar.visibility = View.GONE
                 imageView.visibility = View.VISIBLE
-                return false // Allow error placeholder to be set
+                return false
             }
 
             override fun onResourceReady(
@@ -43,19 +39,18 @@ object Utils {
                 dataSource: com.bumptech.glide.load.DataSource?,
                 isFirstResource: Boolean
             ): Boolean {
-                // Hide ProgressBar and show the ImageView when loading is complete
+                // visibility management when loading is complete
                 progressBar.visibility = View.GONE
                 imageView.visibility = View.VISIBLE
-                return false // Allow Glide to handle the resource
+                return false
             }
         }
 
-        // Load the image using Glide
         Glide.with(context)
-            .load(imageUrl) // Load image from URL
-            .error(R.drawable.image_error) // Optional error image
-            .listener(listener) // Set the listener
-            .into(imageView) // Set the image in the ImageView
+            .load(imageUrl)
+            .error(R.drawable.image_error)
+            .listener(listener)
+            .into(imageView)
     }
 
     val navOptions = NavOptions.Builder()
@@ -68,7 +63,7 @@ object Utils {
     fun showSnackbar(
         view: View,
         message: String,
-        duration: Int = Snackbar.LENGTH_SHORT,
+        duration: Int = Snackbar.LENGTH_LONG,
         actionText: String? = null,
         action: (() -> Unit)? = null
     ) {

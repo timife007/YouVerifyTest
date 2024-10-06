@@ -12,17 +12,14 @@ object Validation {
     }
 
     private fun validatePassword(password: String, confirmPassword: String): ValidateResponse {
-        // Check if the password length is less than 6 characters
+
         if (password.length < 6) {
             return ValidateResponse(
                 isValid = false,
                 message = "Password is too short, should be at least 6 characters",
                 errorType = ErrorType.SHORT_PASSWORD
             )
-        }
-
-        // Check if the password and confirmPassword match
-        if (password != confirmPassword) {
+        } else if (password != confirmPassword) {
             return ValidateResponse(
                 isValid = false,
                 message = "Passwords don't match",
@@ -48,27 +45,36 @@ object Validation {
         isPasswordValid: (Boolean, String?, Boolean) -> Unit,
         allValidated: () -> Unit
     ) {
-        // Validate email
         val emailValidation = validateEmail(email)
-        isEmailValid(emailValidation.isValid, emailValidation.message)
-
-        // Validate password and confirm password
-        val passwordValidation = validatePassword(password, confirmPassword)
-        if (passwordValidation.isValid) {
-            isPasswordValid(true, null, true) // Valid password
-        } else {
-            // If password validation fails, check for specific error type
-            isPasswordValid(
-                false,
-                passwordValidation.message,
-                passwordValidation.errorType == ErrorType.SHORT_PASSWORD
-            )
+        val passwordValidation =
+            validatePassword(password, confirmPassword)
+        // Check if the email is valid
+        if (!emailValidation.isValid) {
+            // If invalid, invoke callback with false and the error message
+            isEmailValid(false, emailValidation.message)
+            return
         }
+        // If valid, invoke callback indicating success
+        isEmailValid(true, null)
 
-        // Call allValidated if both email and password are valid
-        if (emailValidation.isValid && passwordValidation.isValid) {
-            allValidated()
+        // Check if the password is valid
+        if (!passwordValidation.isValid) {
+            /**
+             *If invalid, invoke callback with error message and
+             * whether it's a short password password error.
+             */
+            if (passwordValidation.errorType == ErrorType.SHORT_PASSWORD) {
+                isPasswordValid(false, passwordValidation.message, true)
+            } else {
+                isPasswordValid(true, passwordValidation.message, false)
+            }
+            return
         }
+        // If valid, invoke callback indicating success
+        isPasswordValid(true, null, true)
+
+        // Call the allValidated callback since all validations passed
+        allValidated()
     }
 
 
