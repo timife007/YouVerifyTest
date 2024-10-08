@@ -21,6 +21,7 @@ This Simple e-commerce App demonstrates modern Android development with Hilt, Co
 - [Retrofit](https://github.com/square/retrofit): A networking library for fetching data over the internet
 - [Turbine](https://github.com/cashapp/turbine): A small testing library for kotlinx.coroutines Flow.
 - Material3 design guidelines
+- Firebase for user authentication and email verification.
   
 ## Architecture
 This app is based on the MVVM architecture and the Repository pattern, which follows the [Google's official architecture guidance](https://developer.android.com/topic/architecture).
@@ -40,7 +41,7 @@ The domain layer consists mainly of repostory interfaces, use cases and business
 ## Prerequisites
 To build this project, you require:
 
-- Android Studio jelly fish
+- Android Studio koala
 - Gradle or AGP 8.5.2
 - Kotlin version 2.0.0,
 - Clone the repository.
