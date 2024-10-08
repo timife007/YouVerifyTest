@@ -23,7 +23,7 @@ interface CartDao{
     suspend fun deleteCartItem(productId: Int)
 
     @Query("SELECT quantity FROM carted_product WHERE productId = :id")
-    fun getCartedItemCount(id:Int): Int?
+    suspend fun getCartedItemCount(id:Int): Int?
 
     @Query("SELECT * FROM carted_product WHERE productId = :id")
     suspend fun getSingleCartedProduct(id:Int): CartedProductEntity?

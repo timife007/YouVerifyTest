@@ -18,10 +18,6 @@ interface CacheDao {
     @Query("DELETE FROM product")
     suspend fun clearAllProducts()
 
-
-    @Query("SELECT * FROM product WHERE category LIKE '%' || :category || '%'")
-    suspend fun getProductsByCategory(category: String): List<ProductEntity>
-
     @Query("SELECT * FROM product WHERE id = :productId")
     suspend fun getProductById(productId: Int): ProductEntity?
 
