@@ -1,11 +1,9 @@
 package com.timife.youverifytest.presentation.screens
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,7 +14,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.paystack.android.core.Paystack
 import com.paystack.android.ui.paymentsheet.PaymentSheet
 import com.paystack.android.ui.paymentsheet.PaymentSheetResult
-import com.paystack.android.ui.paymentsheet.createPaymentSheet
 import com.timife.youverifytest.BuildConfig
 import com.timife.youverifytest.R
 import com.timife.youverifytest.databinding.FragmentCartBinding
