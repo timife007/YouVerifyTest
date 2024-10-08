@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,7 @@ import com.paystack.android.core.Paystack
 import com.paystack.android.ui.paymentsheet.PaymentSheet
 import com.paystack.android.ui.paymentsheet.PaymentSheetResult
 import com.paystack.android.ui.paymentsheet.createPaymentSheet
+import com.timife.youverifytest.BuildConfig
 import com.timife.youverifytest.R
 import com.timife.youverifytest.databinding.FragmentCartBinding
 import com.timife.youverifytest.navigation.ProductList
@@ -43,6 +45,12 @@ class CartFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentCartBinding.inflate(inflater, container, false)
+
+        // Handle back press
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            val navController = findNavController()
+            navController.popBackStack(ProductList, true)
+        }
 
         recyclerView = binding.cartRecyclerview
         adapter = CartListAdapter(
@@ -90,7 +98,7 @@ class CartFragment : Fragment() {
         makePayment()
 
         Paystack.builder()
-            .setPublicKey("pk_test_5f5dffc9728e29df00ce92d4dd4c37fc8108ce58")
+            .setPublicKey(BuildConfig.PUBLIC_KEY)
             .setLoggingEnabled(true)
             .build()
         paymentSheet = PaymentSheet(this, ::paymentComplete)
@@ -101,12 +109,9 @@ class CartFragment : Fragment() {
     }
 
     private fun triggerValidation() {
-        Log.d("TAG", "triggerValidation: triggered")
         lifecycleScope.launch {
             viewModel.totalPrice.collectLatest {
-                Log.d("TAG", "triggerValidation: $it")
                 if (it != 0.0) {
-                    Log.d("TAG", "triggerValidation: $it")
                     viewModel.paymentInit(it)
                 }
             }
@@ -126,8 +131,8 @@ class CartFragment : Fragment() {
                         binding.checkoutProgress.visibility = View.GONE
                     }
                     is InitPaymentState.Error -> {
-                        Utils.showSnackbar(binding.root, it.error)
-                        binding.cartProgress.visibility = View.GONE
+                        Utils.showSnackbar(binding.root, "Payment Failed, please try again")
+                        binding.checkoutProgress.visibility = View.GONE
                     }
                     else -> {}
                 }
@@ -145,8 +150,7 @@ class CartFragment : Fragment() {
             is PaymentSheetResult.Completed -> {
                 // Returns the transaction reference  PaymentCompletionDetails(reference={TransactionRef})
                 viewModel.clearCartDB()
-                findNavController().navigate(ProductList)
-                findNavController().popBackStack()
+                findNavController().popBackStack(ProductList, false)
                 getString(R.string.successful)
             }
         }

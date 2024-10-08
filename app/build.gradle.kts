@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -20,6 +22,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val properties = Properties().apply{
+            load(project.rootProject.file("local.properties").inputStream())
+        }
+        buildConfigField("String","PUBLIC_KEY","\"${properties.getProperty("public-key")}\"")
+        buildConfigField("String","SECRET_KEY","\"${properties.getProperty("secret-key")}\"")
+
+    }
+    buildFeatures{
+        buildConfig = true
     }
 
     buildTypes {
@@ -32,6 +44,7 @@ android {
             signingConfig = signingConfigs.getByName("debug")
 
         }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
