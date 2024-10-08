@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -42,12 +41,6 @@ class CartFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentCartBinding.inflate(inflater, container, false)
-
-        // Handle back press
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            val navController = findNavController()
-            navController.popBackStack(ProductList, true)
-        }
 
         recyclerView = binding.cartRecyclerview
         adapter = CartListAdapter(

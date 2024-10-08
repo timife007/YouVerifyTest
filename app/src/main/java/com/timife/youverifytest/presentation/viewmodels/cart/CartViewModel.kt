@@ -1,6 +1,5 @@
 package com.timife.youverifytest.presentation.viewmodels.cart
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.timife.youverifytest.domain.Resource

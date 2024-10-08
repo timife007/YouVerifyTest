@@ -6,10 +6,8 @@ import com.timife.youverifytest.data.local.daos.CartDao
 import com.timife.youverifytest.data.mappers.toCartedProduct
 import com.timife.youverifytest.data.mappers.toCartedProductEntity
 import com.timife.youverifytest.data.mappers.toPaymentAccess
-import com.timife.youverifytest.data.remote.models.PaymentAccessDto
 import com.timife.youverifytest.data.remote.models.requests.PaymentInitRequest
 import com.timife.youverifytest.data.remote.services.PaymentApiService
-import com.timife.youverifytest.di.PaystackRetrofit
 import com.timife.youverifytest.domain.Resource
 import com.timife.youverifytest.domain.model.PaymentAccess
 import com.timife.youverifytest.domain.repositories.CartRepository

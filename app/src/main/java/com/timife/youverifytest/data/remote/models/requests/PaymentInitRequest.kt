@@ -1,8 +1,8 @@
 package com.timife.youverifytest.data.remote.models.requests
 
 
-import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 
 @Keep
 data class PaymentInitRequest(
